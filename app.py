@@ -11,7 +11,7 @@ st.header("Mentor: Meeta Kabra, TA: Pranshu Jaiswal")
 week1 = pd.read_csv("Week 1.csv")
 week2 = pd.read_csv("Week 2.csv")
 week3 = pd.read_csv("Week 3.csv")
-# week4 = pd.read_csv("Week 4.csv")
+week4 = pd.read_csv("Week 4.csv")
 certificates = pd.read_csv("Certificates.csv")
 
 week = st.selectbox(
@@ -72,7 +72,7 @@ if week == "Week 3":
         st.write("Number of participants in Mentor Hour:", 23)
         st.write("Number of participants in TA Hour:", 10)
         
-        st.write("Number of submissions:", len(week2))
+        st.write("Number of submissions:", len(week3))
         st.write("Total Marks:", 19)
 
         st.subheader("Week 3 Marks Distribution")
@@ -86,6 +86,28 @@ if week == "Week 3":
         ax3.set_ylabel("Frequency", fontsize = 7)
 
         st.pyplot(fig3, use_container_width=False)
+
+if week == "Week 4":
+    with st.container():
+        st.header("Week 4")
+
+        st.write("Number of participants in Mentor Hour:", 20)
+        st.write("Number of participants in TA Hour:", 8)
+        
+        st.write("Number of submissions:", len(week4))
+        st.write("Total Marks:", 29)
+
+        st.subheader("Week 4 Marks Distribution")
+        data4 = week4["Score"]
+
+        fig4, ax4 = plt.subplots(figsize=(3, 2))
+        ax4.hist(data4, bins = 20)
+        ax4.set_xlabel("Marks Distribution", fontsize = 7)
+        ax4.tick_params(axis='both', which='major', labelsize=7)
+        plt.tight_layout()
+        ax4.set_ylabel("Frequency", fontsize = 7)
+
+        st.pyplot(fig4, use_container_width=False)
 
 with st.container():
     st.table(certificates)
