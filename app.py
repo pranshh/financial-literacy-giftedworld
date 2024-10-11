@@ -16,7 +16,7 @@ certificates = pd.read_csv("Certificates.csv")
 
 week = st.selectbox(
     "Choose week for its statistics",
-    ("Week 1", "Week 2", "Week 3"),
+    ("Week 1", "Week 2", "Week 3", "Week 4"),
     index=None,
     placeholder="Select Week...",
 )
