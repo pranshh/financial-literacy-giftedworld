@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
-from tempfile import NamedTemporaryFile
+import io
 
 st.set_page_config(page_title="Financial Literacy || Gifted World",
                     page_icon="GW_logo.webp")
@@ -96,18 +95,20 @@ with st.container(border=True):
     st.subheader("Submissions")
     st.write("Number of active students:", 30)
 
-    with NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
-        with pd.ExcelWriter(tmp.name, engine='xlsxwriter') as writer:
-            for sheet_name, df in certificates.items():
-                df.to_excel(writer, sheet_name=sheet_name, index=False)
+    buffer = io.BytesIO()
 
-        tmp.close()
+    with pd.ExcelWriter(buffer, engine='xlsxwriter', engine_kwargs={'options': {'strings_to_numbers': True}}) as writer:
+        for sheet_name, df in certificates.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
 
-    st.download_button(label='📥 Download Certificates Data',
-                    data=open(tmp.name, 'rb').read(),
-                    file_name='Certificates.xlsx',
-                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    os.remove(tmp.name)
+    buffer.seek(0)
+
+    st.download_button(
+        label='📥 Download Certificates Data',
+        data=buffer,
+        file_name='Certificate List.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
     labels = 'Certificate of Outstanding Performance', 'Certificate of Excellence', 'Certificate of Completion', 'No Certificate'
     sizes = [12, 3, 5, 10]
