@@ -24,16 +24,21 @@ week = st.selectbox(
 )
 
 if week == "Week 1":
-    with st.container():
+    with st.container(border=True):
         st.header("Week 1")
 
-        st.write("Number of participants in Mentor Hour:", 32)
-        st.write("Number of participants in TA Hour:", 20)
-        
-        st.write("Number of Optional Questions:", 11)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label="No of participants in Mentor Hour", value=32)
+            st.metric(label="No of optional questions", value=11)
 
-        st.write("Number of submissions:", len(week1))
-        st.write("Total Marks:", 34)
+        with col2:
+            st.metric(label="No of participants in TA Hour", value=20)
+            st.metric(label="No of submissions", value=len(week1))
+
+        with col3:
+            st.metric(label="Total marks", value=28)
+
 
         st.subheader("Week 1 Marks Distribution")
         data1 = week1["Score"]
@@ -75,13 +80,17 @@ if week == "Week 2":
     with st.container():
         st.header("Week 2")
 
-        st.write("Number of participants in Mentor Hour:", 26)
-        st.write("Number of participants in TA Hour:", 12)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label="No of participants in Mentor Hour", value=26, delta=-6, delta_color="normal")
+            st.metric(label="No of optional questions", value=7, delta=-4, delta_color="normal")
 
-        st.write("Number of Optional Questions:", 7)
-        
-        st.write("Number of submissions:", len(week2))
-        st.write("Total Marks:", 23)
+        with col2:
+            st.metric(label="No of participants in TA Hour", value=12, delta=-8, delta_color="normal")
+            st.metric(label="No of submissions", value=len(week2), delta=-4, delta_color="normal")
+
+        with col3:
+            st.metric(label="Total marks", value=23, delta=-11, delta_color="normal")
 
         st.subheader("Week 2 Marks Distribution")
         data2 = week2["Score"]
@@ -123,13 +132,17 @@ if week == "Week 3":
     with st.container():
         st.header("Week 3")
 
-        st.write("Number of participants in Mentor Hour:", 23)
-        st.write("Number of participants in TA Hour:", 10)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label="No of participants in Mentor Hour", value=23, delta=-3, delta_color="normal")
+            st.metric(label="No of optional questions", value=5, delta=-2, delta_color="normal")
 
-        st.write("Number of Optional Questions:", 5)
-        
-        st.write("Number of submissions:", len(week3))
-        st.write("Total Marks:", 19)
+        with col2:
+            st.metric(label="No of participants in TA Hour", value=10, delta=-2, delta_color="normal")
+            st.metric(label="No of submissions", value=len(week3), delta=-2, delta_color="normal")
+
+        with col3:
+            st.metric(label="Total marks", value=19, delta=-4, delta_color="normal")
 
         st.subheader("Week 3 Marks Distribution")
         data3 = week3["Score"]
@@ -171,13 +184,18 @@ if week == "Week 4":
     with st.container():
         st.header("Week 4")
 
-        st.write("Number of participants in Mentor Hour:", 20)
-        st.write("Number of participants in TA Hour:", 8)
-        
-        st.write("Number of Optional Questions:", 8)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label="No of participants in Mentor Hour", value=20, delta=-3, delta_color="normal")
+            st.metric(label="No of optional questions", value=8, delta=3, delta_color="normal")
 
-        st.write("Number of submissions:", len(week4))
-        st.write("Total Marks:", 29)
+        with col2:
+            st.metric(label="No of participants in TA Hour", value=8, delta=-2, delta_color="normal")
+            st.metric(label="No of submissions", value=len(week3), delta=-1, delta_color="normal")
+
+        with col3:
+            st.metric(label="Total marks", value=29, delta=10, delta_color="normal")
+
 
         st.subheader("Week 4 Marks Distribution")
         data4 = week4["Score"]
@@ -215,7 +233,7 @@ if week == "Week 4":
             st.write(f"Median: {data4_1.median():.2f}")
             st.write(f"Mode: {data4_1.mode().values[0]}")
 
-with st.container():
+with st.container(border=True):
     st.subheader("Submissions")
     st.write("Number of active students:", 30)
 
