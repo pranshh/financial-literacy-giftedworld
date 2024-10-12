@@ -77,7 +77,7 @@ if week == "Week 1":
             st.write(f"Mode: {data1_1.mode().values[0]}")
 
 if week == "Week 2":
-    with st.container():
+    with st.container(border=True):
         st.header("Week 2")
 
         col1, col2, col3 = st.columns(3)
@@ -129,7 +129,7 @@ if week == "Week 2":
             st.write(f"Mode: {data2_1.mode().values[0]}")
 
 if week == "Week 3":
-    with st.container():
+    with st.container(border=True):
         st.header("Week 3")
 
         col1, col2, col3 = st.columns(3)
@@ -181,7 +181,7 @@ if week == "Week 3":
             st.write(f"Mode: {data3_1.mode().values[0]}")
 
 if week == "Week 4":
-    with st.container():
+    with st.container(border=True):
         st.header("Week 4")
 
         col1, col2, col3 = st.columns(3)
@@ -195,7 +195,6 @@ if week == "Week 4":
 
         with col3:
             st.metric(label="Total marks", value=29, delta=10, delta_color="normal")
-
 
         st.subheader("Week 4 Marks Distribution")
         data4 = week4["Score"]
