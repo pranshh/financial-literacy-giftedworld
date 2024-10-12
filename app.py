@@ -16,221 +16,81 @@ week3 = pd.read_csv("Week 3.csv")
 week4 = pd.read_csv("Week 4.csv")
 certificates = pd.read_excel("Certificates.xlsx", sheet_name=None)
 
-week = st.selectbox(
-    "Choose week for its statistics",
-    ("Week 1", "Week 2", "Week 3", "Week 4"),
-    index=None,
-    placeholder="Select Week...",
+week = st.multiselect(
+    "Choose week(s) for statistics",
+    ["Week 1", "Week 2", "Week 3", "Week 4"],
+    ["Week 1", "Week 2", "Week 3", "Week 4"]
 )
 
-if week == "Week 1":
+def display_week_stats(week_name, week_data, prev_week_data=None):
     with st.container(border=True):
-        st.header("Week 1")
+        st.header(week_name)
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric(label="No of participants in Mentor Hour", value=32)
-            st.metric(label="No of optional questions", value=11)
+            mentor_hour = {"Week 1": 32, "Week 2": 26, "Week 3": 23, "Week 4": 20}[week_name]
+            optional_questions = {"Week 1": 11, "Week 2": 7, "Week 3": 5, "Week 4": 8}[week_name]
+            st.metric(label="No of participants in Mentor Hour", value=mentor_hour)
+            st.metric(label="No of optional questions", value=optional_questions)
 
         with col2:
-            st.metric(label="No of participants in TA Hour", value=20)
-            st.metric(label="No of submissions", value=len(week1))
+            ta_hour = {"Week 1": 20, "Week 2": 12, "Week 3": 10, "Week 4": 8}[week_name]
+            st.metric(label="No of participants in TA Hour", value=ta_hour)
+            st.metric(label="No of submissions", value=len(week_data))
 
         with col3:
-            st.metric(label="Total marks", value=28)
+            total_marks = {"Week 1": 28, "Week 2": 23, "Week 3": 19, "Week 4": 29}[week_name]
+            st.metric(label="Total marks", value=total_marks)
 
+        st.subheader(f"{week_name} Marks Distribution")
+        data = week_data["Score"]
+        data_optional = week_data["Number of Optional Attempted"]
 
-        st.subheader("Week 1 Marks Distribution")
-        data1 = week1["Score"]
-        data1_1 = week1["Number of Optional Attempted"]
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 8))
 
-        fig1, (ax1, ax1_1) = plt.subplots(2, 1, figsize=(6, 8))
-
-        ax1.hist(data1, bins=20, edgecolor='black')
+        ax1.hist(data, bins=20, edgecolor='black')
         ax1.set_xlabel("Marks", fontsize=10)
         ax1.set_ylabel("Frequency", fontsize=10)
         ax1.set_title("Marks Distribution", fontsize=12)
         ax1.tick_params(axis='both', which='major', labelsize=8)
 
-        ax1_1.hist(data1_1, bins=30, edgecolor='black')
-        ax1_1.set_xlabel("Number of Optional Questions Attempted", fontsize=10)
-        ax1_1.set_ylabel("Frequency", fontsize=10)
-        ax1_1.set_title("Distribution of Optional Questions Attempted", fontsize=12)
-        ax1_1.tick_params(axis='both', which='major', labelsize=8)
-
-        plt.tight_layout()
-        st.pyplot(fig1)
-
-        st.subheader("Statistics")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.write("Marks")
-            st.write(f"Mean: {data1.mean():.2f}")
-            st.write(f"Median: {data1.median():.2f}")
-            st.write(f"Standard Deviation: {data1.std():.2f}")
-
-        with col2:
-            st.write("Optional Questions")
-            st.write(f"Mean: {data1_1.mean():.2f}")
-            st.write(f"Median: {data1_1.median():.2f}")
-            st.write(f"Mode: {data1_1.mode().values[0]}")
-
-if week == "Week 2":
-    with st.container(border=True):
-        st.header("Week 2")
-
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric(label="No of participants in Mentor Hour", value=26, delta=-6, delta_color="normal")
-            st.metric(label="No of optional questions", value=7, delta=-4, delta_color="normal")
-
-        with col2:
-            st.metric(label="No of participants in TA Hour", value=12, delta=-8, delta_color="normal")
-            st.metric(label="No of submissions", value=len(week2), delta=-4, delta_color="normal")
-
-        with col3:
-            st.metric(label="Total marks", value=23, delta=-11, delta_color="normal")
-
-        st.subheader("Week 2 Marks Distribution")
-        data2 = week2["Score"]
-        data2_1 = week2["Number of Optional Attempted"]
-
-        fig2, (ax2, ax2_1) = plt.subplots(2, 1, figsize=(6, 8))
-
-        ax2.hist(data2, bins=20, edgecolor='black')
-        ax2.set_xlabel("Marks", fontsize=10)
+        ax2.hist(data_optional, bins=30, edgecolor='black')
+        ax2.set_xlabel("Number of Optional Questions Attempted", fontsize=10)
         ax2.set_ylabel("Frequency", fontsize=10)
-        ax2.set_title("Marks Distribution", fontsize=12)
+        ax2.set_title("Distribution of Optional Questions Attempted", fontsize=12)
         ax2.tick_params(axis='both', which='major', labelsize=8)
 
-        ax2_1.hist(data2_1, bins=30, edgecolor='black')
-        ax2_1.set_xlabel("Number of Optional Questions Attempted", fontsize=10)
-        ax2_1.set_ylabel("Frequency", fontsize=10)
-        ax2_1.set_title("Distribution of Optional Questions Attempted", fontsize=12)
-        ax2_1.tick_params(axis='both', which='major', labelsize=8)
-
         plt.tight_layout()
-        st.pyplot(fig2)
+        st.pyplot(fig)
 
         st.subheader("Statistics")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.write("Marks")
-            st.write(f"Mean: {data2.mean():.2f}")
-            st.write(f"Median: {data2.median():.2f}")
-            st.write(f"Standard Deviation: {data2.std():.2f}")
-
-        with col2:
-            st.write("Optional Questions")
-            st.write(f"Mean: {data2_1.mean():.2f}")
-            st.write(f"Median: {data2_1.median():.2f}")
-            st.write(f"Mode: {data2_1.mode().values[0]}")
-
-if week == "Week 3":
-    with st.container(border=True):
-        st.header("Week 3")
-
         col1, col2, col3 = st.columns(3)
+
         with col1:
-            st.metric(label="No of participants in Mentor Hour", value=23, delta=-3, delta_color="normal")
-            st.metric(label="No of optional questions", value=5, delta=-2, delta_color="normal")
+            st.metric(label="Mean Score", value=f"{data.mean():.2f}")
+            st.metric(label="Mean Optional Questions", value=f"{data_optional.mean():.2f}")
 
         with col2:
-            st.metric(label="No of participants in TA Hour", value=10, delta=-2, delta_color="normal")
-            st.metric(label="No of submissions", value=len(week3), delta=-2, delta_color="normal")
+            st.metric(label="Median Score", value=f"{data.median():.2f}")
+            st.metric(label="Median Optional Questions", value=f"{data_optional.median():.2f}")
 
         with col3:
-            st.metric(label="Total marks", value=19, delta=-4, delta_color="normal")
+            st.metric(label="Score Std Dev", value=f"{data.std():.2f}")
+            st.metric(label="Mode Optional Questions", value=f"{data_optional.mode().values[0]}")
 
-        st.subheader("Week 3 Marks Distribution")
-        data3 = week3["Score"]
-        data3_1 = week3["Number of Optional Attempted"]
 
-        fig3, (ax3, ax3_1) = plt.subplots(2, 1, figsize=(6, 8))
-
-        ax3.hist(data3, bins=20, edgecolor='black')
-        ax3.set_xlabel("Marks", fontsize=10)
-        ax3.set_ylabel("Frequency", fontsize=10)
-        ax3.set_title("Marks Distribution", fontsize=12)
-        ax3.tick_params(axis='both', which='major', labelsize=8)
-
-        ax3_1.hist(data3_1, bins=30, edgecolor='black')
-        ax3_1.set_xlabel("Number of Optional Questions Attempted", fontsize=10)
-        ax3_1.set_ylabel("Frequency", fontsize=10)
-        ax3_1.set_title("Distribution of Optional Questions Attempted", fontsize=12)
-        ax3_1.tick_params(axis='both', which='major', labelsize=8)
-
-        plt.tight_layout()
-        st.pyplot(fig3)
-
-        st.subheader("Statistics")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.write("Marks")
-            st.write(f"Mean: {data3.mean():.2f}")
-            st.write(f"Median: {data3.median():.2f}")
-            st.write(f"Standard Deviation: {data3.std():.2f}")
-
-        with col2:
-            st.write("Optional Questions")
-            st.write(f"Mean: {data3_1.mean():.2f}")
-            st.write(f"Median: {data3_1.median():.2f}")
-            st.write(f"Mode: {data3_1.mode().values[0]}")
-
-if week == "Week 4":
-    with st.container(border=True):
-        st.header("Week 4")
-
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric(label="No of participants in Mentor Hour", value=20, delta=-3, delta_color="normal")
-            st.metric(label="No of optional questions", value=8, delta=3, delta_color="normal")
-
-        with col2:
-            st.metric(label="No of participants in TA Hour", value=8, delta=-2, delta_color="normal")
-            st.metric(label="No of submissions", value=len(week3), delta=-1, delta_color="normal")
-
-        with col3:
-            st.metric(label="Total marks", value=29, delta=10, delta_color="normal")
-
-        st.subheader("Week 4 Marks Distribution")
-        data4 = week4["Score"]
-        data4_1 = week4["Number of Optional Attempted"]
-
-        fig4, (ax4, ax4_1) = plt.subplots(2, 1, figsize=(6, 8))
-
-        ax4.hist(data4, bins=20, edgecolor='black')
-        ax4.set_xlabel("Marks", fontsize=10)
-        ax4.set_ylabel("Frequency", fontsize=10)
-        ax4.set_title("Marks Distribution", fontsize=12)
-        ax4.tick_params(axis='both', which='major', labelsize=8)
-
-        ax4_1.hist(data4_1, bins=30, edgecolor='black')
-        ax4_1.set_xlabel("Number of Optional Questions Attempted", fontsize=10)
-        ax4_1.set_ylabel("Frequency", fontsize=10)
-        ax4_1.set_title("Distribution of Optional Questions Attempted", fontsize=12)
-        ax4_1.tick_params(axis='both', which='major', labelsize=8)
-
-        plt.tight_layout()
-        st.pyplot(fig4)
-
-        st.subheader("Statistics")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.write("Marks")
-            st.write(f"Mean: {data4.mean():.2f}")
-            st.write(f"Median: {data4.median():.2f}")
-            st.write(f"Standard Deviation: {data4.std():.2f}")
-
-        with col2:
-            st.write("Optional Questions")
-            st.write(f"Mean: {data4_1.mean():.2f}")
-            st.write(f"Median: {data4_1.median():.2f}")
-            st.write(f"Mode: {data4_1.mode().values[0]}")
+if week:
+    for selected_week in week:
+        if selected_week == "Week 1":
+            display_week_stats("Week 1", week1)
+        elif selected_week == "Week 2":
+            display_week_stats("Week 2", week2, week1)
+        elif selected_week == "Week 3":
+            display_week_stats("Week 3", week3, week2)
+        elif selected_week == "Week 4":
+            display_week_stats("Week 4", week4, week3)
+else:
+    st.write("Please select at least one week to display statistics.")
 
 with st.container(border=True):
     st.subheader("Submissions")
