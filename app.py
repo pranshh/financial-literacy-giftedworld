@@ -111,7 +111,7 @@ with st.container(border=True):
     )
 
     labels = 'Certificate of Outstanding Performance', 'Certificate of Excellence', 'Certificate of Completion', 'No Certificate'
-    sizes = [15, 3, 5, 7]
+    sizes = [17, 3, 3, 7]
     explode = (0, 0, 0, 0.1)
 
     def autopct_format(pct, allvals):
